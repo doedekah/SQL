@@ -1,0 +1,27 @@
+SELECT *
+from fortune_companies;
+
+--What industries have the best pto?
+SELECT industry, ROUND(AVG(paid_time_off_days)) as average_pto 
+From fortune_companies
+Group by industry
+Having average_pto>15 
+Order by average_pto desc;
+
+--For canidate considering growing their family or who already have dependents what companies may best support them? 
+SELECT company_name, healthcare_benefits, maternity_leave_weeks,
+CASE WHEN maternity_leave_weeks>=14 
+AND healthcare_benefits=1 THEN "Great Parental Support"
+WHEN maternity_leave_weeks>=10 
+AND healthcare_benefits=1 THEN "Good Parental Support"
+WHEN maternity_leave_weeks>=8 AND healthcare_benefits=1 THEN "OK parental Support" 
+ELSE "Limited parental support"
+END AS maternal_leave_type
+From fortune_companies
+Order by maternal_leave_type; 
+
+--Do small companies have longer employee tenure?  
+SELECT employees, MAX(tenure),
+CASE WHEN employees>=5000 THEN "Large Company"
+ELSE "Small Company"
+From fortune companies
